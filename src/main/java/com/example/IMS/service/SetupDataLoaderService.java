@@ -33,15 +33,9 @@ public class SetupDataLoaderService implements ApplicationListener<ContextRefres
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Override
     @Transactional
+    @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-
-        InventoryUser user = userRepository.getInventoryUserByName("Test");
-        if (user != null){
-            return;
-        }
-
         Privilege readPrivilege = createPrivilegeIfNotFound("USER_READ_PRIVILEGE");
         Privilege writePrivilege = createPrivilegeIfNotFound("USER_WRITE_PRIVILEGE");
         Privilege deletePrivilege = createPrivilegeIfNotFound("USER_DELETE_PRIVILEGE");
@@ -50,17 +44,11 @@ public class SetupDataLoaderService implements ApplicationListener<ContextRefres
         List<Privilege> stuffPrivileges = Arrays.asList(readPrivilege, writePrivilege);
         List<Privilege> userPrivileges = Collections.singletonList(readPrivilege);
 
-        createRoleIfNotFound("ROLE_ADMIN", adminPrivileges);
         createRoleIfNotFound("ROLE_STUFF", stuffPrivileges);
         createRoleIfNotFound("ROLE_USER", userPrivileges);
 
-        Role adminRole = roleRepository.findByRoleName("ROLE_ADMIN");
-        user = new InventoryUser();
-        user.setName("test");
-        user.setPassword(passwordEncoder.encode("test"));
-        user.setEmail("test@test.com");
-        user.setUserRoles(new HashSet<>(Collections.singletonList(adminRole)));
-        userRepository.save(user);
+        Role adminRole = createRoleIfNotFound("ROLE_ADMIN", adminPrivileges);
+        createUserIfNotFound("admin", Collections.singletonList(adminRole));
     }
 
     @Transactional
@@ -75,13 +63,27 @@ public class SetupDataLoaderService implements ApplicationListener<ContextRefres
     }
 
     @Transactional
-    void createRoleIfNotFound(String name, List<Privilege> privileges) {
+    Role createRoleIfNotFound(String name, List<Privilege> privileges) {
         Role role = roleRepository.findByRoleName(name);
         if (role == null) {
             role = new Role();
             role.setRoleName(name);
             role.setPrivileges(privileges);
             roleRepository.save(role);
+        }
+        return role;
+    }
+
+    @Transactional
+    void createUserIfNotFound(String name, List<Role> roles) {
+        InventoryUser user = userRepository.getInventoryUserByName(name);
+        if (user == null){
+            user = new InventoryUser();
+            user.setPassword(passwordEncoder.encode("admin"));
+            user.setEmail("admin@admin.com");
+            user.setName("admin");
+            user.setUserRoles(new HashSet<>(roles));
+            userRepository.save(user);
         }
     }
 

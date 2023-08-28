@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IUserRepository extends JpaRepository<InventoryUser, Long> {
+
     InventoryUser getInventoryUserByName(String name);
+    InventoryUser getInventoryUserByEmail(String email);
 }
