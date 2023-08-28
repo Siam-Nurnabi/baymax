@@ -1,5 +1,7 @@
 package com.example.IMS.service;
 
+import com.example.IMS.enums.Permission;
+import com.example.IMS.enums.RoleName;
 import com.example.IMS.model.InventoryUser;
 import com.example.IMS.model.Privilege;
 import com.example.IMS.model.Role;
@@ -13,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -36,27 +38,50 @@ public class SetupDataLoaderService implements ApplicationListener<ContextRefres
     @Transactional
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        Privilege readPrivilege = createPrivilegeIfNotFound("USER_READ_PRIVILEGE");
-        Privilege writePrivilege = createPrivilegeIfNotFound("USER_WRITE_PRIVILEGE");
-        Privilege deletePrivilege = createPrivilegeIfNotFound("USER_DELETE_PRIVILEGE");
+        List<Privilege> adminPrivileges = new ArrayList<>();
+        List<Privilege> stuffPrivileges = new ArrayList<>();
+        List<Privilege> userPrivileges = new ArrayList<>();
 
-        List<Privilege> adminPrivileges = Arrays.asList(readPrivilege, writePrivilege, deletePrivilege);
-        List<Privilege> stuffPrivileges = Arrays.asList(readPrivilege, writePrivilege);
-        List<Privilege> userPrivileges = Collections.singletonList(readPrivilege);
+        for (Permission permission : Permission.values()) {
+            Privilege privilege = createPrivilegeIfNotFound(permission);
+            if (privilege.getPrivilegeName().contains("READ")) {
+                adminPrivileges.add(privilege);
+                stuffPrivileges.add(privilege);
+                userPrivileges.add(privilege);
+            } else if (privilege.getPrivilegeName().contains("WRITE")) {
+                adminPrivileges.add(privilege);
+                stuffPrivileges.add(privilege);
+            } else if (privilege.getPrivilegeName().contains("DELETE")) {
+                adminPrivileges.add(privilege);
+            }
+        }
 
-        createRoleIfNotFound("ROLE_STUFF", stuffPrivileges);
-        createRoleIfNotFound("ROLE_USER", userPrivileges);
-
-        Role adminRole = createRoleIfNotFound("ROLE_ADMIN", adminPrivileges);
-        createUserIfNotFound("admin", Collections.singletonList(adminRole));
+        for (RoleName role : RoleName.values()) {
+            List<Privilege> privileges = new ArrayList<>();
+            String testUserName = "";
+            if (role.getName().contains("ADMIN")) {
+                privileges = adminPrivileges;
+                testUserName = "admin";
+            } else if (role.getName().contains("STUFF")) {
+                privileges = stuffPrivileges;
+                testUserName = "stuff";
+            } else if (role.getName().contains("USER")) {
+                privileges = userPrivileges;
+                testUserName = "user";
+            }
+            Role db_role = createRoleIfNotFound(role.getName(), privileges);
+            if (!testUserName.equals("")) {
+                createUserIfNotFound(testUserName, Collections.singletonList(db_role));
+            }
+        }
     }
 
     @Transactional
-    Privilege createPrivilegeIfNotFound(String name) {
-        Privilege privilege = privilegeRepository.findByPrivilegeName(name);
+    Privilege createPrivilegeIfNotFound(Permission permission) {
+        Privilege privilege = privilegeRepository.findByPrivilegeName(permission.getPrivilege());
         if (privilege == null) {
             privilege = new Privilege();
-            privilege.setPrivilegeName(name);
+            privilege.setPrivilegeName(permission.getPrivilege());
             privilegeRepository.save(privilege);
         }
         return privilege;
@@ -77,11 +102,11 @@ public class SetupDataLoaderService implements ApplicationListener<ContextRefres
     @Transactional
     void createUserIfNotFound(String name, List<Role> roles) {
         InventoryUser user = userRepository.getInventoryUserByName(name);
-        if (user == null){
+        if (user == null) {
             user = new InventoryUser();
-            user.setPassword(passwordEncoder.encode("admin"));
-            user.setEmail("admin@admin.com");
-            user.setName("admin");
+            user.setPassword(passwordEncoder.encode(name));
+            user.setEmail("test@test.com");
+            user.setName(name);
             user.setUserRoles(new HashSet<>(roles));
             userRepository.save(user);
         }
