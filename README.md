@@ -1,6 +1,6 @@
 # Patient Management System 
 
-Individual doctor will have information whenever a patient come again. Patient do not have to bring previous history record. Rather all of the previous record will be stored.
+Doctor will store patient specific information.So whenever a patient come again,patient won't have to bring previous history record. Rather all of previous record will be available to the doctor.
 
 The Web-based Patient Management System will attempt to automate and replace the traditional paper based approach for patient management and tracking . The paper based approach is quite tedious and it results in a lot of time wastage. 
 
