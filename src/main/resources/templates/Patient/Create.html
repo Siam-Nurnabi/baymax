@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="header :: myHeader"></div>
+</head>
+<body class="sb-nav-fixed">
+<div th:replace="navbar :: myNavbar"></div>
+<div id="layoutSidenav">
+    <div th:replace="sidebar :: mySidebar"></div>
+    <!-- Form starts from here -->
+    <div id="layoutSidenav_content">
+        <div class="container-fluid">
+            <br>
+            <hr>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                <li class="breadcrumb-item active">Add New Patient</li>
+            </ol>
+            <form class="needs-validation" th:action="@{/patient/create}"
+                  th:object="${patientDto}" method="post" novalidate>
+                <fieldset class="border p-2">
+                    <legend class="w-auto"> Add new patient</legend>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Patient Name</label>
+                        <div class="col-md-4 inputGroupContainer">
+                            <div class="input-group">
+									<span class="input-group-addon"><i
+                                            class="glyphicon glyphicon-user"></i></span>
+                                <input name="patientName"
+                                       placeholder="Enter Patient Name"
+                                       th:field="*{name}"
+                                       class="form-control"
+                                       type="text" required>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Gender</label>
+                        <div class="col-md-4 inputGroupContainer">
+                            <div class="input-group">
+									<span class="input-group-addon"><i
+                                            class="glyphicon glyphicon-user"></i></span>
+                                <input name="gender"
+                                       placeholder="Enter Gender"
+                                       th:field="*{gender}"
+                                       class="form-control"
+                                       type="text" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Phone Number</label>
+                        <div class="col-md-4 inputGroupContainer">
+                            <div class="input-group">
+									<span class="input-group-addon"><i
+                                            class="glyphicon glyphicon-user"></i></span>
+                                <input name="phoneNumber"
+                                       placeholder="Enter Phone Number"
+                                       th:field="*{phoneNumber}"
+                                       class="form-control"
+                                       type="text" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Date of birth</label>
+                        <div class="col-md-4 inputGroupContainer">
+                            <div class="input-group">
+									<span class="input-group-addon"><i
+                                            class="glyphicon glyphicon-user"></i></span>
+                                <input name="dateOfBirth"
+                                       type="date"
+                                       placeholder="Enter Date of birth"
+                                       th:field="*{dateOfBirth}"
+                                       class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Email</label>
+                        <div class="col-md-4 inputGroupContainer">
+                            <div class="input-group">
+									<span class="input-group-addon"><i
+                                            class="glyphicon glyphicon-user"></i></span>
+                                <input name="name"
+                                       placeholder="Enter Email"
+                                       th:field="*{email}"
+                                       class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Select Basic -->
+                    <!-- Button -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label"></label>
+                        <div class="col-md-4">
+                            <button id="resetBtn" type="reset" class="btn btn-danger ">Reset</button>
+                            <button id="addBtn" type="submit"
+                                    class="btn btn-success float-right">Create
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+<div></div>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<div th:replace="footer :: myFooter"></div>
+</body>
+</html>
