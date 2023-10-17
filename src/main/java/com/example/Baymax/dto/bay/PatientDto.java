@@ -1,8 +1,10 @@
 package com.example.Baymax.dto.bay;
 
-import com.example.Baymax.model.Patient;
+import com.example.Baymax.model.bay.Patient;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class PatientDto {
     private long id;
@@ -12,11 +14,9 @@ public class PatientDto {
     @NotNull(message = "Gender is required")
     private String gender;
 
-    @NotNull(message = "Creation Date is required")
-    private Date creationDate;
-
     @NotNull(message = "DOB is required")
-    private Date dateOfBirth;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateOfBirth;
 
     @NotNull(message = "Phone Number is required")
     private String phoneNumber;
@@ -27,16 +27,14 @@ public class PatientDto {
         this.id = patient.getId();
         this.name = patient.getName();
         this.gender = patient.getGender();
-        this.creationDate = new Date();
         this.dateOfBirth = patient.getDateOfBirth();
         this.phoneNumber = patient.getPhoneNumber();
         this.email = patient.getEmail();
     }
 
-    public PatientDto(String name, String gender, Date dateOfBirth, String phoneNumber) {
+    public PatientDto(String name, String gender, LocalDate dateOfBirth, String phoneNumber) {
         this.name = name;
         this.gender = gender;
-        this.creationDate = new Date();
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
     }
@@ -56,11 +54,7 @@ public class PatientDto {
         return gender;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
@@ -70,5 +64,29 @@ public class PatientDto {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
