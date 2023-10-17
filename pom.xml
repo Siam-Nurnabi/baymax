@@ -10,10 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>IMS-AP</artifactId>
+	<artifactId>BAYMAX-AP</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>IMS-AP</name>
-	<description>Inventory Management System - AP Project</description>
+	<name>BAYMAX-AP</name>
+	<description>Patient Management System - AP Project</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
