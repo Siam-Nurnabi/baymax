@@ -1,10 +1,16 @@
-package com.example.Baymax.model;
+package com.example.Baymax.model.bay;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "patient")
+@Table(name = "patient",
+        uniqueConstraints = @UniqueConstraint(
+                name = "patient_dob_phoneNumber_unique",
+                columnNames = {"date_of_birth", "phone_number"}
+        )
+)
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,16 +24,38 @@ public class Patient {
     private String gender;
 
     @Column(name = "creation_date", nullable = false)
-    private Date creationDate;
+    private LocalDateTime creationDate;
 
     @Column(name = "date_of_birth", nullable = false)
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "modified_date")
+    private LocalDateTime modifiedDate;
+
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
+    }
+
+    public void setModifiedDate(LocalDateTime modifiedDate) {
+        this.modifiedDate = modifiedDate;
+    }
+
+    public String getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
+
+    @Column(name = "modified_by")
+    private String modifiedBy;
 
     public long getId() {
         return id;
@@ -53,19 +81,19 @@ public class Patient {
         this.gender = gender;
     }
 
-    public Date getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
