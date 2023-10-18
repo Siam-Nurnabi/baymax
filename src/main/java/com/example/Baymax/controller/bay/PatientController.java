@@ -1,7 +1,7 @@
 package com.example.Baymax.controller.bay;
 
 import com.example.Baymax.dto.bay.PatientDto;
-import com.example.Baymax.model.Patient;
+import com.example.Baymax.model.bay.Patient;
 import com.example.Baymax.service.bay.PatientService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,8 +43,8 @@ public class PatientController {
         List<String> errors = new ArrayList<>();
         Patient patient = patientService.toPatient(patientDto);
         try {
-//            patientService.savePatient(patient);
-        }catch (Exception ex){
+            patientService.savePatient(patient);
+        } catch (Exception ex) {
             System.out.println(ex);
         }
         return "/Patient/Create";
