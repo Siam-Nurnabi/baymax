@@ -1,5 +1,6 @@
 package com.example.Baymax.service.bay;
 
+import com.example.Baymax.Utilities.ImageUtil;
 import com.example.Baymax.model.bay.ImageData;
 import com.example.Baymax.repository.bay.IImageDataRepository;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class ImageDataService {
         ImageData imageData = new ImageData();
         imageData.setName(file.getOriginalFilename());
         imageData.setType(file.getContentType());
-        imageData.setData(file.getBytes());
+        imageData.setData(ImageUtil.compressImage(file.getBytes()));
         imageDataRepository.save(imageData);
         return "Image uploaded successfully" + imageData.getName();
     }
@@ -32,13 +33,13 @@ public class ImageDataService {
         return new ImageData(dbImage.get().getId(),
                 dbImage.get().getName(),
                 dbImage.get().getType(),
-                dbImage.get().getData());
+                ImageUtil.decompressImage(dbImage.get().getData()));
     }
 
     @Transactional
-    public byte[] getImage(String imageName){
+    public byte[] getImage(String imageName) {
         Optional<ImageData> dbImage = imageDataRepository.findByName(imageName);
-        byte[] image = dbImage.get().getData();
+        byte[] image = ImageUtil.decompressImage(dbImage.get().getData());
         return image;
     }
 }
