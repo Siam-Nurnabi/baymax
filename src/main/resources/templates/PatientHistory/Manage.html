@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<div th:replace="header :: myHeader"></div>
+</head>
+<body class="sb-nav-fixed">
+	<div th:replace="navbar :: myNavbar"></div>
+	<div id="layoutSidenav">
+		<div th:replace="sidebar :: mySidebar"></div>
+		<div id="layoutSidenav_content">
+			<div class="container-fluid">
+				<br>
+				<hr>
+				<ol class="breadcrumb mb-4">
+					<li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+					<li class="breadcrumb-item active">Inventory Items</li>
+				</ol>
+				<button style="font-size: 20px" type="button"
+					class="btn btn-outline-dark" id="myButton">
+					Add a new item <i class="fa fa-plus"></i>
+				</button>
+				<br> <br>
+				<table class="table table-bordered table-hover">
+					<thead class="thead-dark">
+						<tr>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Gender</th>
+							<th>CreationDate</th>
+							<th>Date of Birth</th>
+							<th>Phone Number</th>
+							<th>Email</th>
+							<th colspan="2" style="text-align: center">Options</th>
+						</tr>
+					</thead>
+					<tbody th:if="${#lists.isEmpty(patientList)}">
+						<tr>
+							<td colspan="3" style="color: red;">No Data found</td>
+						</tr>
+					</tbody>
+					<tbody id="myTable">
+						<tr th:each="patientDto : ${patientList}">
+							<td th:text="${patientDto.getId()}"></td>
+							<td th:text="${patientDto.getName()}"></td>
+							<td th:text="${patientDto.getGender()}"></td>
+							<td th:text="${patientDto.getCreationDate()}"></td>
+							<td th:text="${patientDto.getDateOfBirth()}"></td>
+							<td th:text="${patientDto.getPhoneNumber()}"></td>
+							<td th:text="${patientDto.getEmail()}"></td>
+							<td><a th:href="@{/ItemEdit/{id}(id=${patientDto.getId()})}"
+								class="btn btn-primary"> Edit </a></td>
+							<td><a th:href="@{/ItemDelete/{id}(id=${patientDto.getId()})}"
+								class="btn btn-danger"> Delete </a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<script type="text/javascript">
+				document.getElementById("myButton").onclick = function() {
+					location.href = "ItemCreate";
+				};
+			</script>
+		</div>
+	</div>
+</body>
+</html>
