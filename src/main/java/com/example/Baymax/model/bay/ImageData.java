@@ -17,8 +17,16 @@ public class ImageData {
     private String type;
 
     @Lob
-    @Column(name = "data",length = 1000)
+    @Column(name = "data", length = 1000)
     private byte[] data;
+
+    @ManyToOne
+    @JoinColumn(
+            name = "patient_id",
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "patient_history_image_fk")
+    )
+    private PatientHistory patientHistory;
 
     public ImageData() {
     }
@@ -60,5 +68,13 @@ public class ImageData {
 
     public void setData(byte[] data) {
         this.data = data;
+    }
+
+    public PatientHistory getPatientHistory() {
+        return patientHistory;
+    }
+
+    public void setPatientHistory(PatientHistory patientHistory) {
+        this.patientHistory = patientHistory;
     }
 }

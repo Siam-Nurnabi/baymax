@@ -2,6 +2,8 @@ package com.example.Baymax.model.bay;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "patient_history")
@@ -19,6 +21,28 @@ public class PatientHistory {
 
     @Column(name = "modified_by")
     private String modifiedBy;
+
+    @OneToMany(
+            mappedBy = "patientHistory",
+            cascade = {CascadeType.ALL}
+    )
+    private List<ImageData> imageData= new ArrayList<>();
+
+    public String addImage(ImageData data){
+        if(!this.imageData.contains(data)){
+            this.imageData.add(data);
+            data.setPatientHistory(this);
+        }
+        return "Image successfully added";
+    }
+
+    public String removeImage(ImageData data){
+        if(this.imageData.contains(data)){
+            this.imageData.remove(data);
+            data.setPatientHistory(null);
+        }
+        return "Image successfully removed";
+    }
 
     public long getId() {
         return id;
