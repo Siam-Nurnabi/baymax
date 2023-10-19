@@ -22,8 +22,8 @@ public class ImageData {
 
     @ManyToOne
     @JoinColumn(
-            name = "patient_id",
-            referencedColumnName = "id",
+            name = "history_id",
+            referencedColumnName = "history_id",
             foreignKey = @ForeignKey(name = "patient_history_image_fk")
     )
     private PatientHistory patientHistory;
