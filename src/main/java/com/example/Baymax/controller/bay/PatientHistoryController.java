@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @Controller
 @RequestMapping(path = "history")
 public class PatientHistoryController {
@@ -27,7 +29,7 @@ public class PatientHistoryController {
         return "/PatientHistory/Manage";
     }
 
-    @GetMapping("/create")
+    @GetMapping("/upload")
     public String upload(Model model) {
 //        PatientHistoryDto patientHistoryDto = new PatientHistoryDto();
 //        model.addAttribute("patientHistoryDto", patientHistoryDto);
@@ -35,18 +37,20 @@ public class PatientHistoryController {
     }
 
     @PostMapping("/upload")
-    public String upload(@RequestParam("image") MultipartFile file, BindingResult result, Model model
+    public String upload(@RequestParam("image") MultipartFile file, Model model
 //                         @Valid @ModelAttribute("patientDto") PatientHistoryDto patientHistoryDto,
-    ) {
+    ) throws IOException {
+        System.out.println("Get Original file name:" + file.getOriginalFilename());
 //        List<String> errors = new ArrayList<>();
 //        Patient patient = patientHistoryService.toPatient(patientDto);
         PatientHistory patientHistory = new PatientHistory();
         try {
             patientHistoryService.createPatientHistory(patientHistory);
         } catch (Exception ex) {
+            ex.printStackTrace();
             System.out.println(ex);
         }
-        return "Upload";
+        return "/PatientHistory/Upload";
     }
 
 }

@@ -12,23 +12,20 @@
         <div class="container-fluid">
             <br>
             <hr>
-            <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-                <li class="breadcrumb-item active">Add New Patient History</li>
-            </ol>
             <form class="needs-validation"
                   th:action="@{/history/upload}"
                   method="post"
+                  enctype="multipart/form-data"
                   novalidate>
                 <fieldset class="border p-2">
                     <legend class="w-auto"> Add new patient history</legend>
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Patient Name</label>
+                        <label class="col-md-4 control-label">Choose an image</label>
                         <div class="col-md-4 inputGroupContainer">
                             <div class="input-group">
 									<span class="input-group-addon"><i
                                             class="glyphicon glyphicon-user"></i></span>
-                                <input name="imageData"
+                                <input name="image"
                                        placeholder="Select image"
                                        accept="image/*"
                                        class="form-control-file"
@@ -42,12 +39,16 @@
                         <div class="col-md-4">
                             <button id="resetBtn" type="reset" class="btn btn-danger ">Reset</button>
                             <button id="addBtn" type="submit"
-                                    class="btn btn-success float-right">Create
+                                    class="btn btn-success float-right">Upload
                             </button>
                         </div>
                     </div>
                 </fieldset>
             </form>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                <li class="breadcrumb-item active">Add New Patient History</li>
+            </ol>
         </div>
     </div>
 </div>
